@@ -38,5 +38,16 @@ if len(cnts) > 0:
     maskROI = mask[y:y + h, x:x + w]
     imageROI = cv2.bitwise_and(imageROI, imageROI,
                                mask=maskROI)
-    cv2.imshow("Mask", imageROI)
-    cv2.waitKey(0)
+
+    # loop over the rotation angles
+    for angle in np.arange(0, 360, 15):
+        rotated = imutils.rotate(imageROI, angle)
+        cv2.imshow("Rotated (Problematic", rotated)
+        cv2.waitKey(0)
+
+    # loop over the rotation angles again, this time ensure the
+    # entire pill is still within ROI after rotation
+    for angle in np.arange(0, 360, 15):
+        rotated = imutils.rotate_bound(imageROI, angle)
+        cv2.imshow("Rotated (Correct)", rotated)
+        cv2.waitKey(0)
