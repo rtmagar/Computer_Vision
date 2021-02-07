@@ -54,14 +54,13 @@ for imagePath in imagePaths:
     label = imagePath.split(os.path.sep)[-2]
     labels.append(label)
 
-    # scale the raw pixel intensities to the range [0, 1]
-    data = np.array(data, dtype='float') / 255.0
-    labels = np.array(labels)
+# scale the raw pixel intensities to the range [0, 1]
+data = np.array(data, dtype='float') / 255.0
+labels = np.array(labels)
 
 # partition the data into training and testing splits using 75% of
 # the data for training and the remaining 25% for testing
-(trainX, testX, trainY, testY) = train_test_split(data,
-                                    labels, test_size=0.25, random_state=42)
+(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.25, random_state=42)
 
 # convert the labels from integers to vectors (for 2-class, binary
 # classification you should use keras' to_categorical function
@@ -95,7 +94,7 @@ H = model.fit(x=trainX, y=trainY, validation_data=(testX, testY),
 print('[INFO] evaluating network...')
 predictions = model.predict(x=testX, batch_size=32)
 print(classification_report(testY.argmax(axis=1),
-                            predictions.argmax(axis=1, target_names=lb.classes_)))
+                            predictions.argmax(axis=1), target_names=lb.classes_))
 
 # plot the training loss and accuracy
 N = np.arange(0, EPOCHS)
@@ -110,4 +109,13 @@ plt.xlabel('Epoch #')
 plt.ylabel('Loss/Accuracy')
 plt.legend()
 plt.savefig(args['plot'])
+
+# save the model and label binarizer to disk
+print('[INFO] serializing network and label binarizer...')
+model.save(args['model'], save_format='h5')
+f = open(args['label_bin'], 'wb')
+f.write(pickle.dumps(lb))
+f.close()
+
+
 
