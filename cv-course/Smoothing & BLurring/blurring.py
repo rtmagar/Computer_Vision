@@ -16,3 +16,21 @@ for (kX, kY) in kernelSizes:
     cv2.imshow("Average ({}, {})".format(kX, kY), blurred)
     cv2.waitKey(0)
 
+# close all windows to cleanup the screen.
+cv2.destroyAllWindows()
+cv2.imshow("Original", image)
+
+# loop over the kernel sizes and apply a "Gaussian" blur to the image
+for (kX, kY) in kernelSizes:
+    blurred = cv2.GaussianBlur(image, (kX, kY), 0)
+    cv2.imshow('Gaussian. ({}, {})'.format(kX, kY), blurred)
+    cv2.waitKey(0)
+
+cv2.destroyAllWindows()
+cv2.imshow("Original", image)
+
+# loop over the kernel size and apply a "Median" blur to the image
+for k in (3, 9, 15):
+    blurred = cv2.medianBlur(image, k)
+    cv2.imshow("Meidan {}".format(k), blurred)
+    cv2.waitKey(0)
