@@ -7,9 +7,11 @@ args = vars(ap.parse_args())
 
 # load the image and convert it to grayscale, and blur it slightly
 image = cv2.imread(args["image"])
-gray = cv2.cvtColor(image, COLOR_BGR2GRAY)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (7,7), 0)
 cv2.imshow("Image", image)
+cv2.imshow("Gray", gray)
+cv2.imshow("Blurred", blurred)
 
 
 # apply basic thresholding -- the first parameter is the image
@@ -25,6 +27,8 @@ cv2.imshow("Threshold Binary Inverse", threshInv)
 (T, thresh) = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)
 cv2.imshow("Threshold Binary", thresh)
 
+
 # finally, we can visualize only the masked regions in the image
 cv2.imshow("Output", cv2.bitwise_and(image, image, mask=threshInv))
 cv2.waitKey(0)
+
